@@ -20,6 +20,200 @@ const WA_MESSAGES = {
   plan: (plan) => `¡Hola Comunidad Bienestar! Quiero info sobre el plan: ${plan}`,
 };
 
+const PLAN_CATEGORIES = [
+  {
+    id: "descenso",
+    label: "Descenso de Peso",
+    tagline: "Programas integrales para bajar de peso de forma cuidada, saludable y sostenida.",
+    plans: [
+      {
+        name: "Plan Descenso Iniciales",
+        modalidad: "Modalidad Virtual",
+        precio: "$130.000",
+        periodo: "pesos mensuales",
+        badge: null,
+        destacado: false,
+        features: [
+          "Charla Integrativa en la primer semana",
+          "1 grupo terapéutico por semana (a elección en grilla)",
+          "1 consulta con Nutricionista por mes (40% Off en adicionales c/tope)",
+          "1 consulta con Médico en el mes de inicio (40% Off en posteriores c/tope)",
+          "Pase Libre al 1° Fin de Semana Vale Bienestar y 50% Off en el 2°",
+        ],
+      },
+      {
+        name: "Plan Descenso Intermedio",
+        modalidad: "Bi-Modal (Virtual y Presencial)",
+        precio: "$165.000",
+        periodo: "pesos mensuales",
+        badge: "Más Elegido",
+        destacado: true,
+        features: [
+          "Charla Integrativa en la primer semana",
+          "3 grupos terapéuticos por semana (a elección en grilla)",
+          "1 consulta con Nutricionista por mes (60% Off en adicionales c/tope)",
+          "1 consulta con Médico semestral (60% Off en adicionales c/tope)",
+          "Pase Libre al 1° Fin de Semana Vale Bienestar y 60% Off en los siguientes",
+        ],
+      },
+      {
+        name: "Plan Descenso Full",
+        modalidad: "Bi-Modal (Virtual y Presencial)",
+        precio: "$210.000",
+        periodo: "pesos mensuales",
+        badge: "Más Completo",
+        destacado: false,
+        features: [
+          "Charla Integrativa en la primer semana",
+          "Grupos terapéuticos LIBRE (hasta 6 por semana según grilla)",
+          "1 consulta con Nutricionista por mes (80% Off en adicionales c/tope)",
+          "1 consulta con Médico trimestral (80% Off en adicionales c/tope)",
+          "Pase Libre al 1° Fin de Semana Vale Bienestar y 80% Off en los siguientes",
+        ],
+      },
+    ],
+  },
+  {
+    id: "mantenimiento",
+    label: "Mantenimiento",
+    tagline: "Diseñado para quienes alcanzaron su peso y quieren sostener los logros en el tiempo.",
+    plans: [
+      {
+        name: "Mantenimiento Responsable",
+        modalidad: "Bi-Modal (Virtual y Presencial)",
+        precio: "$130.000",
+        periodo: "pesos mensuales",
+        badge: null,
+        destacado: false,
+        features: [
+          "Charla Integrativa en la primer semana (o VISA si venís de Descenso)",
+          "Mínimo 2 grupos terapéuticos por MES (a elección dentro de grilla)",
+          "1 consulta con Nutricionista por mes (40% Off en adicionales c/tope)",
+          "1 consulta con Médico semestral (40% Off en adicionales c/tope)",
+          "Pase Libre al Fin de Semana Vale Bienestar",
+        ],
+      },
+      {
+        name: "Mantenimiento Activo",
+        modalidad: "Bi-Modal (Virtual y Presencial)",
+        precio: "$165.000",
+        periodo: "pesos mensuales",
+        badge: "Recomendado",
+        destacado: true,
+        features: [
+          "Charla Integrativa en la primer semana (o VISA si venís de Descenso)",
+          "Mínimo 2 grupos terapéuticos por SEMANA (a elección dentro de grilla)",
+          "1 consulta con Nutricionista por mes (40% Off en adicionales c/tope)",
+          "1 consulta con Médico semestral (40% Off en adicionales c/tope)",
+          "Pase Libre al Fin de Semana Vale Bienestar",
+        ],
+      },
+    ],
+  },
+  {
+    id: "especiales",
+    label: "Planes Especiales",
+    tagline: "Planes con alto seguimiento individual, coordinación semanal y frecuencia médica intensiva.",
+    plans: [
+      {
+        name: "Módulo Médico / Nutricional",
+        modalidad: "Modalidad Virtual",
+        precio: "$275.000",
+        periodo: "pesos mensuales",
+        badge: null,
+        destacado: false,
+        features: [
+          "1 reunión SEMANAL con Coordinador para seguimiento",
+          "1 consulta con Nutricionista por SEMANA (40% Off adicionales c/tope)",
+          "1 consulta con Médico por QUINCENA (40% Off adicionales c/tope)",
+          "Pase Libre al Fin de Semana Vale Bienestar",
+        ],
+      },
+      {
+        name: "Plan Personal (2xSem + 1xMes)",
+        modalidad: "Bi-Modal (Virtual y Presencial)",
+        precio: "$320.000",
+        periodo: "pesos mensuales",
+        badge: "Máxima Personalización",
+        destacado: true,
+        features: [
+          "1 reunión QUINCENAL con Coordinador para seguimiento",
+          "2 grupos terapéuticos por SEMANA (a elección en nuestra grilla)",
+          "1 consulta con Nutricionista por SEMANA (40% Off adicionales c/tope)",
+          "1 consulta con Médico por MES (40% Off adicionales c/tope)",
+          "Pase Libre al Fin de Semana Vale Bienestar",
+        ],
+      },
+    ],
+  },
+  {
+    id: "foco",
+    label: "Solo Grupos / Nutrición",
+    tagline: "Opciones específicas para quienes buscan foco exclusivo en grupos terapéuticos o consultas nutricionales.",
+    plans: [
+      {
+        name: "Solo Grupos (1 x Semana)",
+        subtitulo: "Planes Solo Grupos Terapéuticos",
+        modalidad: "Modalidad Virtual",
+        precio: "$100.000",
+        periodo: "pesos mensuales",
+        badge: null,
+        destacado: false,
+        features: [
+          "Charla Integrativa en la primer semana",
+          "1 grupo terapéutico por semana (Únicamente Miércoles 13:30 hs)",
+          "40% Off en consulta con Nutricionista por mes",
+          "40% Off en consulta con Médico por trimestre",
+        ],
+      },
+      {
+        name: "Grupos Libre (hasta 6 x Sem)",
+        subtitulo: "Planes Solo Grupos Terapéuticos",
+        modalidad: "Bi-Modal (Virtual y Presencial)",
+        precio: "$120.000",
+        periodo: "pesos mensuales",
+        badge: "Acceso Libre Grupal",
+        destacado: true,
+        features: [
+          "Charla Integrativa en la primer semana",
+          "Grupos terapéuticos LIBRES, hasta 6 por SEMANA (a elección en grilla)",
+          "40% Off en consulta con Nutricionista por mes",
+          "40% Off en consulta con Médico por trimestre",
+        ],
+      },
+      {
+        name: "1 Nutri x Semana",
+        subtitulo: "Planes Enfoque Nutricionista",
+        modalidad: "Modalidad Virtual",
+        precio: "$200.000",
+        periodo: "pesos mensuales",
+        badge: null,
+        destacado: false,
+        features: [
+          "Charla Integrativa en la primer semana",
+          "1 consulta con Nutricionista por SEMANA (40% Off adicionales c/tope)",
+          "1 consulta con Médico por TRIMESTRE (40% Off adicionales c/tope)",
+        ],
+      },
+      {
+        name: "1 Nutri + 1 Grupo x Semana",
+        subtitulo: "Planes Enfoque Nutricionista",
+        modalidad: "Bi-Modal (Virtual y Presencial)",
+        precio: "$250.000",
+        periodo: "pesos mensuales",
+        badge: null,
+        destacado: false,
+        features: [
+          "Charla Integrativa en la primer semana",
+          "1 grupo terapéutico por semana (a elección dentro de grilla)",
+          "1 consulta con Nutricionista por SEMANA (40% Off adicionales c/tope)",
+          "1 consulta con Médico por TRIMESTRE (40% Off adicionales c/tope)",
+        ],
+      },
+    ],
+  },
+];
+
 // (OPCIONAL) Recibir también los formularios por email. Creá uno gratis en
 // https://formspree.io y pegá tu endpoint. Vacío = solo abre WhatsApp.
 const FORMSPREE_ENDPOINT = ""; // ej: "https://formspree.io/f/xxxxxxx"
@@ -74,6 +268,7 @@ export default function Landing() {
   const [showBar, setShowBar] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
+  const [activeCategory, setActiveCategory] = useState("descenso");
 
   const waHola = waLink(WA_MESSAGES.hola);
   const waPlan = (p) => waLink(WA_MESSAGES.plan(p));
@@ -110,7 +305,7 @@ export default function Landing() {
     const root = rootRef.current;
     if (!root) return;
     const items = Array.from(
-      root.querySelectorAll(".pain, .feature, .plan, .step, .testi")
+      root.querySelectorAll(".pain, .feature, .plan-card, .step, .testi")
     );
     if (!items.length) return;
 
@@ -212,6 +407,9 @@ export default function Landing() {
     window.open(waLink(waText), "_blank", "noopener");
     formRef.current?.reset();
   };
+
+  const currentCategory =
+    PLAN_CATEGORIES.find((c) => c.id === activeCategory) || PLAN_CATEGORIES[0];
 
   return (
     <div ref={rootRef}>
@@ -528,52 +726,154 @@ export default function Landing() {
         </section>
 
         {/* ===================== PLANES ===================== */}
-        <section className="section section-soft">
-          <div className="container narrow center">
-            <span className="kicker kicker-center">Planes</span>
-            <h2 className="section-title">Elegí tu camino</h2>
+        <section className="section section-soft" id="planes">
+          <div className="container center">
+            <span className="kicker kicker-center">Planes y Aranceles</span>
+            <h2 className="section-title">Elegí el plan para vos</h2>
             <p className="section-sub">
-              Si no sabés cuál te conviene, escribinos y te ayudamos a decidir.
+              Diseñados de forma integral para brindarte seguimiento profesional, comunidad activa y resultados reales que podés sostener.
             </p>
+
+            {/* Selector de categorías / pestañas */}
+            <div className="plan-tabs" role="tablist" aria-label="Categorías de planes">
+              {PLAN_CATEGORIES.map((cat) => (
+                <button
+                  key={cat.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeCategory === cat.id}
+                  className={"plan-tab" + (activeCategory === cat.id ? " active" : "")}
+                  onClick={() => setActiveCategory(cat.id)}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+
+            {currentCategory?.tagline && (
+              <p className="plan-cat-tagline">{currentCategory.tagline}</p>
+            )}
           </div>
-          <div className="container plans">
-            <article className="plan">
-              <h3 className="plan-name">Vale Bienestar</h3>
-              <p className="plan-desc">
-                El primer paso ideal para conocernos y empezar a cuidarte, sin grandes compromisos.
-              </p>
-              <a className="plan-link" href={waPlan("Vale Bienestar")} target="_blank" rel="noopener">
-                Consultar <span aria-hidden="true">→</span>
-              </a>
-            </article>
-            <article className="plan plan-featured">
-              <span className="plan-badge">El más elegido</span>
-              <h3 className="plan-name">Descenso de Peso</h3>
-              <p className="plan-desc">
-                Nuestro programa principal para bajar de peso de forma saludable y acompañada.
-              </p>
-              <a className="plan-link" href={waPlan("Descenso de Peso")} target="_blank" rel="noopener">
-                Consultar <span aria-hidden="true">→</span>
-              </a>
-            </article>
-            <article className="plan">
-              <h3 className="plan-name">Plan 1 × 1</h3>
-              <p className="plan-desc">
-                Atención personalizada, 100% enfocada en vos, tu ritmo y tus objetivos.
-              </p>
-              <a className="plan-link" href={waPlan("Plan 1x1")} target="_blank" rel="noopener">
-                Consultar <span aria-hidden="true">→</span>
-              </a>
-            </article>
-            <article className="plan">
-              <h3 className="plan-name">Mantenimiento</h3>
-              <p className="plan-desc">
-                Ya llegaste a tu meta. Te ayudamos a sostener el resultado en el tiempo.
-              </p>
-              <a className="plan-link" href={waPlan("Mantenimiento")} target="_blank" rel="noopener">
-                Consultar <span aria-hidden="true">→</span>
-              </a>
-            </article>
+
+          <div className="container">
+            <div className={`plans-grid plans-grid-${currentCategory.plans.length}`}>
+              {currentCategory.plans.map((p, idx) => (
+                <article
+                  key={idx}
+                  className={"plan-card" + (p.destacado ? " plan-card-featured" : "")}
+                >
+                  {p.badge && <span className="plan-badge">{p.badge}</span>}
+
+                  <div className="plan-card-header">
+                    <span className="plan-mode-badge">{p.modalidad}</span>
+                    {p.subtitulo && <span className="plan-sublabel">{p.subtitulo}</span>}
+                    <h3 className="plan-card-title">{p.name}</h3>
+
+                    <div className="plan-price-block">
+                      <div className="plan-price">
+                        <span className="plan-price-amount">{p.precio}</span>
+                      </div>
+                      <span className="plan-price-period">{p.periodo}</span>
+                    </div>
+                  </div>
+
+                  <div className="plan-card-body">
+                    <p className="plan-services-heading">Servicios incluidos:</p>
+                    <ul className="plan-feature-list">
+                      {p.features.map((feat, fIdx) => (
+                        <li key={fIdx}>
+                          <svg
+                            className="plan-check-icon"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <span>{feat}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="plan-card-footer">
+                    <a
+                      className={"btn btn-block " + (p.destacado ? "btn-primary" : "btn-outline-purple")}
+                      href={waPlan(p.name)}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      <WaIcon className="ic-wa" />
+                      <span>Quiero este plan</span>
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            {/* Bloque IMPORTANTE y Beneficios presenciales */}
+            <div className="plans-notice">
+              <div className="plans-notice-badge">
+                <span className="kicker-leaf" aria-hidden="true" />
+                Información Importante
+              </div>
+
+              <div className="plans-notice-grid">
+                <div className="notice-item">
+                  <div className="notice-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                      <line x1="16" y1="2" x2="16" y2="6" />
+                      <line x1="8" y1="2" x2="8" y2="6" />
+                      <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4>Condiciones de Pago</h4>
+                    <p>
+                      Los pagos de planes se realizan del <strong>1 al 10 de cada mes</strong> (posterior a esa fecha aplica 10% de recargo).
+                      Todos los aranceles tienen un ajuste trimestral.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="notice-item">
+                  <div className="notice-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4>Actividades Presenciales en Zona Norte</h4>
+                    <p>Para quienes puedan acercarse a Zona Norte de Bs. As.:</p>
+                    <ul className="notice-sublist">
+                      <li>• <strong>Caminatas de domingos por la mañana</strong> con nuestros Coordinadores.</li>
+                      <li>• <strong>Medias Jornadas Abiertas:</strong> Ejercicio + Grupo terapéutico.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="notice-footer">
+                <p>
+                  Sabemos que es mucha información, pero está todo pensado y diseñado para que encuentres con nosotros los resultados que necesitás. <strong>¡Te esperamos!</strong>
+                </p>
+                <a
+                  className="btn btn-wa"
+                  href={waHola}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <WaIcon />
+                  <span>¿Tenés dudas? Hablá con nosotras</span>
+                </a>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -746,10 +1046,10 @@ export default function Landing() {
           <div className="footer-col">
             <h4>Planes</h4>
             <ul>
-              <li><a href={waPlan("Vale Bienestar")} target="_blank" rel="noopener">Vale Bienestar</a></li>
-              <li><a href={waPlan("Descenso de Peso")} target="_blank" rel="noopener">Descenso de Peso</a></li>
-              <li><a href={waPlan("Plan 1x1")} target="_blank" rel="noopener">Plan 1 × 1</a></li>
-              <li><a href={waPlan("Mantenimiento")} target="_blank" rel="noopener">Mantenimiento</a></li>
+              <li><a href="#planes" onClick={() => setActiveCategory("descenso")}>Descenso de Peso</a></li>
+              <li><a href="#planes" onClick={() => setActiveCategory("mantenimiento")}>Mantenimiento</a></li>
+              <li><a href="#planes" onClick={() => setActiveCategory("especiales")}>Planes Especiales</a></li>
+              <li><a href="#planes" onClick={() => setActiveCategory("foco")}>Solo Grupos / Nutrición</a></li>
             </ul>
           </div>
         </div>
