@@ -10,10 +10,10 @@ import { useEffect, useRef, useState } from "react";
 ============================================================================ */
 
 // Número de WhatsApp en formato internacional, sin "+", espacios ni guiones.
-// Argentina (celular) lleva el 9 después del 54:  54 9 11 5323 0047
+// Argentina (celular) lleva el 9 después del 54:  54 9 11 2258 1566
 // ⚠️ Si al tocar un botón se abre WhatsApp pero NO aparece el texto escrito,
-//    probá sin el 9: "541153230047".
-const WHATSAPP_NUMBER = "5491153230047";
+//    probá sin el 9: "541122581566".
+const WHATSAPP_NUMBER = "5491122581566";
 
 const WA_MESSAGES = {
   hola: "¡Hola Comunidad Bienestar! Quiero info para bajar de peso 💜",
@@ -23,9 +23,9 @@ const WA_MESSAGES = {
 const PLAN_CATEGORIES = [
   {
     id: "descenso",
-    label: "Descenso de Peso",
-    tagline: "Programas integrales y opciones especiales para bajar de peso con acompañamiento profesional.",
-    integrales: [
+    label: "Planes de Descenso",
+    tagline: "Opciones pensadas para bajar de peso con acompañamiento profesional y comunidad.",
+    plans: [
       {
         name: "Plan Descenso Iniciales",
         modalidad: "Modalidad Virtual",
@@ -71,11 +71,9 @@ const PLAN_CATEGORIES = [
           "Pase Libre al 1° Fin de Semana Vale Bienestar y 80% Off en los siguientes",
         ],
       },
-    ],
-    especiales: [
       {
-        name: "Solo Grupos (1 x Semana)",
-        subtitulo: "Planes Solo Grupos Terapéuticos",
+        name: "1 Grupo x Semana",
+        subtitulo: "Solo Grupos Terapéuticos",
         modalidad: "Modalidad Virtual",
         precio: "$100.000",
         periodo: "pesos mensuales",
@@ -90,12 +88,12 @@ const PLAN_CATEGORIES = [
       },
       {
         name: "Grupos Libre (hasta 6 x Sem)",
-        subtitulo: "Planes Solo Grupos Terapéuticos",
+        subtitulo: "Solo Grupos Terapéuticos",
         modalidad: "Bi-Modal (Virtual y Presencial)",
         precio: "$120.000",
         periodo: "pesos mensuales",
-        badge: "Acceso Libre Grupal",
-        destacado: true,
+        badge: null,
+        destacado: false,
         features: [
           "Charla Integrativa en la primer semana",
           "Grupos terapéuticos LIBRES, hasta 6 por SEMANA (a elección en grilla)",
@@ -105,7 +103,7 @@ const PLAN_CATEGORIES = [
       },
       {
         name: "1 Nutri x Semana",
-        subtitulo: "Planes Enfoque Nutricionista",
+        subtitulo: "Enfoque Nutricionista",
         modalidad: "Modalidad Virtual",
         precio: "$200.000",
         periodo: "pesos mensuales",
@@ -119,7 +117,7 @@ const PLAN_CATEGORIES = [
       },
       {
         name: "1 Nutri + 1 Grupo x Semana",
-        subtitulo: "Planes Enfoque Nutricionista",
+        subtitulo: "Enfoque Nutricionista",
         modalidad: "Bi-Modal (Virtual y Presencial)",
         precio: "$250.000",
         periodo: "pesos mensuales",
@@ -136,7 +134,7 @@ const PLAN_CATEGORIES = [
   },
   {
     id: "especiales",
-    label: "Planes Especiales Personalizados",
+    label: "Planes Especiales",
     tagline: "Planes de alta intensidad con coordinación semanal, médico frecuente y seguimiento personalizado.",
     plans: [
       {
@@ -154,7 +152,7 @@ const PLAN_CATEGORIES = [
         ],
       },
       {
-        name: "Plan Personal (2xSem + 1xMes)",
+        name: "Plan Personal 2xSem + 1xMes",
         modalidad: "Bi-Modal (Virtual y Presencial)",
         precio: "$320.000",
         periodo: "pesos mensuales",
@@ -172,7 +170,7 @@ const PLAN_CATEGORIES = [
   },
   {
     id: "mantenimiento",
-    label: "Mantenimiento",
+    label: "Planes de Mantenimiento",
     tagline: "Diseñado para quienes alcanzaron su peso y quieren sostener los logros en el tiempo.",
     plans: [
       {
@@ -285,7 +283,7 @@ function PlanCard({ p, waPlan }) {
       <div className="plan-card-footer">
         <a
           className={"btn btn-block " + (p.destacado ? "btn-primary" : "btn-outline-purple")}
-          href={waPlan(p.name)}
+          href={waPlan(p.subtitulo ? `${p.subtitulo} - ${p.name}` : p.name)}
           target="_blank"
           rel="noopener"
         >
@@ -320,7 +318,6 @@ export default function Landing() {
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
   const [activeCategory, setActiveCategory] = useState("descenso");
-  const [descensoSubTab, setDescensoSubTab] = useState("integrales");
 
   const waHola = waLink(WA_MESSAGES.hola);
   const waPlan = (p) => waLink(WA_MESSAGES.plan(p));
@@ -657,7 +654,7 @@ export default function Landing() {
                     <strong>¡Listo! 🎉</strong> Te llevamos a WhatsApp para terminar. Si no
                     se abre solo, escribinos al{" "}
                     <a href={waHola} target="_blank" rel="noopener">
-                      +54 11 5323 0047
+                      +54 11 2258 1566
                     </a>
                     .
                   </div>
@@ -805,120 +802,14 @@ export default function Landing() {
             {currentCategory?.tagline && (
               <p className="plan-cat-tagline">{currentCategory.tagline}</p>
             )}
-
-            {/* Sub-tabs específicos para Descenso de Peso */}
-            {activeCategory === "descenso" && (
-              <div className="plan-subtabs" role="tablist" aria-label="Opciones de Descenso">
-                <button
-                  type="button"
-                  className={"plan-subtab" + (descensoSubTab === "integrales" ? " active" : "")}
-                  onClick={() => setDescensoSubTab("integrales")}
-                >
-                  Planes Integrales de Descenso
-                </button>
-                <button
-                  type="button"
-                  className={"plan-subtab" + (descensoSubTab === "especiales" ? " active" : "")}
-                  onClick={() => setDescensoSubTab("especiales")}
-                >
-                  Planes Especiales de Descenso
-                </button>
-                <button
-                  type="button"
-                  className={"plan-subtab" + (descensoSubTab === "todos" ? " active" : "")}
-                  onClick={() => setDescensoSubTab("todos")}
-                >
-                  Ver Todos ({currentCategory.integrales.length + currentCategory.especiales.length})
-                </button>
-              </div>
-            )}
           </div>
 
           <div className="container">
-            {activeCategory === "descenso" ? (
-              <>
-                {descensoSubTab === "integrales" && (
-                  <>
-                    <div className="plans-grid plans-grid-3">
-                      {currentCategory.integrales.map((p, idx) => (
-                        <PlanCard key={idx} p={p} waPlan={waPlan} />
-                      ))}
-                    </div>
-                    <div className="plan-inline-switch">
-                      <div className="plan-inline-switch-copy">
-                        <strong>¿Buscás una opción con foco específico?</strong>
-                        <p>Contamos también con los <strong>Planes Especiales de Descenso</strong> (Solo Grupos terapéuticos o Enfoque Nutricionista desde $100.000/mes).</p>
-                      </div>
-                      <button
-                        type="button"
-                        className="btn btn-outline-purple btn-sm"
-                        onClick={() => setDescensoSubTab("especiales")}
-                      >
-                        Ver Planes Especiales de Descenso →
-                      </button>
-                    </div>
-                  </>
-                )}
-
-                {descensoSubTab === "especiales" && (
-                  <>
-                    <div className="plans-subheading-wrap">
-                      <p className="plans-subheading-lead">
-                        Opciones de descenso para quienes buscan acompañamiento enfocado en <strong>grupos terapéuticos</strong> o atención individual con <strong>nutricionista</strong>.
-                      </p>
-                    </div>
-                    <div className="plans-grid plans-grid-4">
-                      {currentCategory.especiales.map((p, idx) => (
-                        <PlanCard key={idx} p={p} waPlan={waPlan} />
-                      ))}
-                    </div>
-                    <div className="plan-inline-switch">
-                      <div className="plan-inline-switch-copy">
-                        <strong>¿Querés el abordaje integral con médico, nutricionista y grupos combinados?</strong>
-                        <p>Mirá nuestros programas principales de descenso (Iniciales, Intermedio y Full).</p>
-                      </div>
-                      <button
-                        type="button"
-                        className="btn btn-outline-purple btn-sm"
-                        onClick={() => setDescensoSubTab("integrales")}
-                      >
-                        ← Ver Planes Integrales
-                      </button>
-                    </div>
-                  </>
-                )}
-
-                {descensoSubTab === "todos" && (
-                  <div className="plans-all-section">
-                    <div className="plans-group-header">
-                      <h3 className="plans-group-title">Planes Integrales de Descenso</h3>
-                      <p className="plans-group-desc">El abordaje médico, nutricional y grupal completo para bajar de peso.</p>
-                    </div>
-                    <div className="plans-grid plans-grid-3">
-                      {currentCategory.integrales.map((p, idx) => (
-                        <PlanCard key={idx} p={p} waPlan={waPlan} />
-                      ))}
-                    </div>
-
-                    <div className="plans-group-header plans-group-header-spaced">
-                      <h3 className="plans-group-title">Planes Especiales de Descenso</h3>
-                      <p className="plans-group-desc">Opciones de descenso enfocadas en solo grupos terapéuticos o consultas nutricionales semanales.</p>
-                    </div>
-                    <div className="plans-grid plans-grid-4">
-                      {currentCategory.especiales.map((p, idx) => (
-                        <PlanCard key={idx} p={p} waPlan={waPlan} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className={`plans-grid plans-grid-${currentCategory.plans.length}`}>
-                {currentCategory.plans.map((p, idx) => (
-                  <PlanCard key={idx} p={p} waPlan={waPlan} />
-                ))}
-              </div>
-            )}
+            <div className={`plans-grid plans-grid-${currentCategory.plans.length}`}>
+              {currentCategory.plans.map((p, idx) => (
+                <PlanCard key={idx} p={p} waPlan={waPlan} />
+              ))}
+            </div>
 
             {/* Bloque IMPORTANTE y Beneficios presenciales */}
             <div className="plans-notice">
@@ -1138,12 +1029,12 @@ export default function Landing() {
             <ul>
               <li>
                 <a href={waHola} target="_blank" rel="noopener">
-                  WhatsApp: +54 11 5323 0047
+                  WhatsApp: +54 11 2258 1566
                 </a>
               </li>
               <li>
-                <a href="mailto:comunidadbienestarcobranzas@gmail.com">
-                  comunidadbienestarcobranzas@gmail.com
+                <a href="mailto:infobienestarcomunidad@gmail.com">
+                  infobienestarcomunidad@gmail.com
                 </a>
               </li>
             </ul>
@@ -1151,10 +1042,9 @@ export default function Landing() {
           <div className="footer-col">
             <h4>Planes</h4>
             <ul>
-              <li><a href="#planes" onClick={() => { setActiveCategory("descenso"); setDescensoSubTab("integrales"); }}>Descenso de Peso (Integrales)</a></li>
-              <li><a href="#planes" onClick={() => { setActiveCategory("descenso"); setDescensoSubTab("especiales"); }}>Planes Especiales de Descenso</a></li>
-              <li><a href="#planes" onClick={() => setActiveCategory("especiales")}>Planes Personalizados</a></li>
-              <li><a href="#planes" onClick={() => setActiveCategory("mantenimiento")}>Mantenimiento</a></li>
+              <li><a href="#planes" onClick={() => setActiveCategory("descenso")}>Planes de Descenso</a></li>
+              <li><a href="#planes" onClick={() => setActiveCategory("especiales")}>Planes Especiales</a></li>
+              <li><a href="#planes" onClick={() => setActiveCategory("mantenimiento")}>Planes de Mantenimiento</a></li>
             </ul>
           </div>
         </div>

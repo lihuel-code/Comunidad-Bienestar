@@ -54,8 +54,8 @@ const jsonLd = {
   description:
     "Programa de descenso de peso con acompañamiento profesional y comunidad.",
   url: "https://comunidadbienestar.com.ar/",
-  telephone: "+5491153230047",
-  email: "comunidadbienestarcobranzas@gmail.com",
+  telephone: "+5491122581566",
+  email: "infobienestarcomunidad@gmail.com",
   image: "/assets/og-image.jpg",
   areaServed: "AR",
   sameAs: [
