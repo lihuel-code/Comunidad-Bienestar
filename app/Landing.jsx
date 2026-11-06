@@ -24,8 +24,8 @@ const PLAN_CATEGORIES = [
   {
     id: "descenso",
     label: "Descenso de Peso",
-    tagline: "Programas integrales para bajar de peso de forma cuidada, saludable y sostenida.",
-    plans: [
+    tagline: "Programas integrales y opciones especiales para bajar de peso con acompañamiento profesional.",
+    integrales: [
       {
         name: "Plan Descenso Iniciales",
         modalidad: "Modalidad Virtual",
@@ -72,85 +72,7 @@ const PLAN_CATEGORIES = [
         ],
       },
     ],
-  },
-  {
-    id: "mantenimiento",
-    label: "Mantenimiento",
-    tagline: "Diseñado para quienes alcanzaron su peso y quieren sostener los logros en el tiempo.",
-    plans: [
-      {
-        name: "Mantenimiento Responsable",
-        modalidad: "Bi-Modal (Virtual y Presencial)",
-        precio: "$130.000",
-        periodo: "pesos mensuales",
-        badge: null,
-        destacado: false,
-        features: [
-          "Charla Integrativa en la primer semana (o VISA si venís de Descenso)",
-          "Mínimo 2 grupos terapéuticos por MES (a elección dentro de grilla)",
-          "1 consulta con Nutricionista por mes (40% Off en adicionales c/tope)",
-          "1 consulta con Médico semestral (40% Off en adicionales c/tope)",
-          "Pase Libre al Fin de Semana Vale Bienestar",
-        ],
-      },
-      {
-        name: "Mantenimiento Activo",
-        modalidad: "Bi-Modal (Virtual y Presencial)",
-        precio: "$165.000",
-        periodo: "pesos mensuales",
-        badge: "Recomendado",
-        destacado: true,
-        features: [
-          "Charla Integrativa en la primer semana (o VISA si venís de Descenso)",
-          "Mínimo 2 grupos terapéuticos por SEMANA (a elección dentro de grilla)",
-          "1 consulta con Nutricionista por mes (40% Off en adicionales c/tope)",
-          "1 consulta con Médico semestral (40% Off en adicionales c/tope)",
-          "Pase Libre al Fin de Semana Vale Bienestar",
-        ],
-      },
-    ],
-  },
-  {
-    id: "especiales",
-    label: "Planes Especiales",
-    tagline: "Planes con alto seguimiento individual, coordinación semanal y frecuencia médica intensiva.",
-    plans: [
-      {
-        name: "Módulo Médico / Nutricional",
-        modalidad: "Modalidad Virtual",
-        precio: "$275.000",
-        periodo: "pesos mensuales",
-        badge: null,
-        destacado: false,
-        features: [
-          "1 reunión SEMANAL con Coordinador para seguimiento",
-          "1 consulta con Nutricionista por SEMANA (40% Off adicionales c/tope)",
-          "1 consulta con Médico por QUINCENA (40% Off adicionales c/tope)",
-          "Pase Libre al Fin de Semana Vale Bienestar",
-        ],
-      },
-      {
-        name: "Plan Personal (2xSem + 1xMes)",
-        modalidad: "Bi-Modal (Virtual y Presencial)",
-        precio: "$320.000",
-        periodo: "pesos mensuales",
-        badge: "Máxima Personalización",
-        destacado: true,
-        features: [
-          "1 reunión QUINCENAL con Coordinador para seguimiento",
-          "2 grupos terapéuticos por SEMANA (a elección en nuestra grilla)",
-          "1 consulta con Nutricionista por SEMANA (40% Off adicionales c/tope)",
-          "1 consulta con Médico por MES (40% Off adicionales c/tope)",
-          "Pase Libre al Fin de Semana Vale Bienestar",
-        ],
-      },
-    ],
-  },
-  {
-    id: "foco",
-    label: "Solo Grupos / Nutrición",
-    tagline: "Opciones específicas para quienes buscan foco exclusivo en grupos terapéuticos o consultas nutricionales.",
-    plans: [
+    especiales: [
       {
         name: "Solo Grupos (1 x Semana)",
         subtitulo: "Planes Solo Grupos Terapéuticos",
@@ -212,6 +134,79 @@ const PLAN_CATEGORIES = [
       },
     ],
   },
+  {
+    id: "especiales",
+    label: "Planes Especiales Personalizados",
+    tagline: "Planes de alta intensidad con coordinación semanal, médico frecuente y seguimiento personalizado.",
+    plans: [
+      {
+        name: "Módulo Médico / Nutricional",
+        modalidad: "Modalidad Virtual",
+        precio: "$275.000",
+        periodo: "pesos mensuales",
+        badge: null,
+        destacado: false,
+        features: [
+          "1 reunión SEMANAL con Coordinador para seguimiento",
+          "1 consulta con Nutricionista por SEMANA (40% Off adicionales c/tope)",
+          "1 consulta con Médico por QUINCENA (40% Off adicionales c/tope)",
+          "Pase Libre al Fin de Semana Vale Bienestar",
+        ],
+      },
+      {
+        name: "Plan Personal (2xSem + 1xMes)",
+        modalidad: "Bi-Modal (Virtual y Presencial)",
+        precio: "$320.000",
+        periodo: "pesos mensuales",
+        badge: "Máxima Personalización",
+        destacado: true,
+        features: [
+          "1 reunión QUINCENAL con Coordinador para seguimiento",
+          "2 grupos terapéuticos por SEMANA (a elección en nuestra grilla)",
+          "1 consulta con Nutricionista por SEMANA (40% Off adicionales c/tope)",
+          "1 consulta con Médico por MES (40% Off adicionales c/tope)",
+          "Pase Libre al Fin de Semana Vale Bienestar",
+        ],
+      },
+    ],
+  },
+  {
+    id: "mantenimiento",
+    label: "Mantenimiento",
+    tagline: "Diseñado para quienes alcanzaron su peso y quieren sostener los logros en el tiempo.",
+    plans: [
+      {
+        name: "Mantenimiento Responsable",
+        modalidad: "Bi-Modal (Virtual y Presencial)",
+        precio: "$130.000",
+        periodo: "pesos mensuales",
+        badge: null,
+        destacado: false,
+        features: [
+          "Charla Integrativa en la primer semana (o VISA si venís de Descenso)",
+          "Mínimo 2 grupos terapéuticos por MES (a elección dentro de grilla)",
+          "1 consulta con Nutricionista por mes (40% Off en adicionales c/tope)",
+          "1 consulta con Médico semestral (40% Off en adicionales c/tope)",
+          "Pase Libre al Fin de Semana Vale Bienestar",
+        ],
+      },
+      {
+        name: "Mantenimiento Activo",
+        modalidad: "Bi-Modal (Virtual y Presencial)",
+        precio: "$165.000",
+        periodo: "pesos mensuales",
+        badge: "Recomendado",
+        destacado: true,
+        features: [
+          "Charla Integrativa en la primer semana (o VISA si venís de Descenso)",
+          "Mínimo 2 grupos terapéuticos por SEMANA (a elección dentro de grilla)",
+          "1 consulta con Nutricionista por mes (40% Off en adicionales c/tope)",
+          "1 consulta con Médico semestral (40% Off en adicionales c/tope)",
+          "Pase Libre al Fin de Semana Vale Bienestar",
+        ],
+      },
+    ],
+  },
 ];
 
 // (OPCIONAL) Recibir también los formularios por email. Creá uno gratis en
@@ -246,6 +241,62 @@ function WaIcon({ className = "ic-wa" }) {
   );
 }
 
+function PlanCard({ p, waPlan }) {
+  return (
+    <article className={"plan-card" + (p.destacado ? " plan-card-featured" : "")}>
+      {p.badge && <span className="plan-badge">{p.badge}</span>}
+
+      <div className="plan-card-header">
+        <span className="plan-mode-badge">{p.modalidad}</span>
+        {p.subtitulo && <span className="plan-sublabel">{p.subtitulo}</span>}
+        <h3 className="plan-card-title">{p.name}</h3>
+
+        <div className="plan-price-block">
+          <div className="plan-price">
+            <span className="plan-price-amount">{p.precio}</span>
+          </div>
+          <span className="plan-price-period">{p.periodo}</span>
+        </div>
+      </div>
+
+      <div className="plan-card-body">
+        <p className="plan-services-heading">Servicios incluidos:</p>
+        <ul className="plan-feature-list">
+          {p.features.map((feat, fIdx) => (
+            <li key={fIdx}>
+              <svg
+                className="plan-check-icon"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <span>{feat}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="plan-card-footer">
+        <a
+          className={"btn btn-block " + (p.destacado ? "btn-primary" : "btn-outline-purple")}
+          href={waPlan(p.name)}
+          target="_blank"
+          rel="noopener"
+        >
+          <WaIcon className="ic-wa" />
+          <span>Quiero este plan</span>
+        </a>
+      </div>
+    </article>
+  );
+}
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const countDigits = (v) => (v.match(/\d/g) || []).length;
 
@@ -269,6 +320,7 @@ export default function Landing() {
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
   const [activeCategory, setActiveCategory] = useState("descenso");
+  const [descensoSubTab, setDescensoSubTab] = useState("integrales");
 
   const waHola = waLink(WA_MESSAGES.hola);
   const waPlan = (p) => waLink(WA_MESSAGES.plan(p));
@@ -753,67 +805,120 @@ export default function Landing() {
             {currentCategory?.tagline && (
               <p className="plan-cat-tagline">{currentCategory.tagline}</p>
             )}
+
+            {/* Sub-tabs específicos para Descenso de Peso */}
+            {activeCategory === "descenso" && (
+              <div className="plan-subtabs" role="tablist" aria-label="Opciones de Descenso">
+                <button
+                  type="button"
+                  className={"plan-subtab" + (descensoSubTab === "integrales" ? " active" : "")}
+                  onClick={() => setDescensoSubTab("integrales")}
+                >
+                  Planes Integrales de Descenso
+                </button>
+                <button
+                  type="button"
+                  className={"plan-subtab" + (descensoSubTab === "especiales" ? " active" : "")}
+                  onClick={() => setDescensoSubTab("especiales")}
+                >
+                  Planes Especiales de Descenso
+                </button>
+                <button
+                  type="button"
+                  className={"plan-subtab" + (descensoSubTab === "todos" ? " active" : "")}
+                  onClick={() => setDescensoSubTab("todos")}
+                >
+                  Ver Todos ({currentCategory.integrales.length + currentCategory.especiales.length})
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="container">
-            <div className={`plans-grid plans-grid-${currentCategory.plans.length}`}>
-              {currentCategory.plans.map((p, idx) => (
-                <article
-                  key={idx}
-                  className={"plan-card" + (p.destacado ? " plan-card-featured" : "")}
-                >
-                  {p.badge && <span className="plan-badge">{p.badge}</span>}
-
-                  <div className="plan-card-header">
-                    <span className="plan-mode-badge">{p.modalidad}</span>
-                    {p.subtitulo && <span className="plan-sublabel">{p.subtitulo}</span>}
-                    <h3 className="plan-card-title">{p.name}</h3>
-
-                    <div className="plan-price-block">
-                      <div className="plan-price">
-                        <span className="plan-price-amount">{p.precio}</span>
+            {activeCategory === "descenso" ? (
+              <>
+                {descensoSubTab === "integrales" && (
+                  <>
+                    <div className="plans-grid plans-grid-3">
+                      {currentCategory.integrales.map((p, idx) => (
+                        <PlanCard key={idx} p={p} waPlan={waPlan} />
+                      ))}
+                    </div>
+                    <div className="plan-inline-switch">
+                      <div className="plan-inline-switch-copy">
+                        <strong>¿Buscás una opción con foco específico?</strong>
+                        <p>Contamos también con los <strong>Planes Especiales de Descenso</strong> (Solo Grupos terapéuticos o Enfoque Nutricionista desde $100.000/mes).</p>
                       </div>
-                      <span className="plan-price-period">{p.periodo}</span>
+                      <button
+                        type="button"
+                        className="btn btn-outline-purple btn-sm"
+                        onClick={() => setDescensoSubTab("especiales")}
+                      >
+                        Ver Planes Especiales de Descenso →
+                      </button>
+                    </div>
+                  </>
+                )}
+
+                {descensoSubTab === "especiales" && (
+                  <>
+                    <div className="plans-subheading-wrap">
+                      <p className="plans-subheading-lead">
+                        Opciones de descenso para quienes buscan acompañamiento enfocado en <strong>grupos terapéuticos</strong> o atención individual con <strong>nutricionista</strong>.
+                      </p>
+                    </div>
+                    <div className="plans-grid plans-grid-4">
+                      {currentCategory.especiales.map((p, idx) => (
+                        <PlanCard key={idx} p={p} waPlan={waPlan} />
+                      ))}
+                    </div>
+                    <div className="plan-inline-switch">
+                      <div className="plan-inline-switch-copy">
+                        <strong>¿Querés el abordaje integral con médico, nutricionista y grupos combinados?</strong>
+                        <p>Mirá nuestros programas principales de descenso (Iniciales, Intermedio y Full).</p>
+                      </div>
+                      <button
+                        type="button"
+                        className="btn btn-outline-purple btn-sm"
+                        onClick={() => setDescensoSubTab("integrales")}
+                      >
+                        ← Ver Planes Integrales
+                      </button>
+                    </div>
+                  </>
+                )}
+
+                {descensoSubTab === "todos" && (
+                  <div className="plans-all-section">
+                    <div className="plans-group-header">
+                      <h3 className="plans-group-title">Planes Integrales de Descenso</h3>
+                      <p className="plans-group-desc">El abordaje médico, nutricional y grupal completo para bajar de peso.</p>
+                    </div>
+                    <div className="plans-grid plans-grid-3">
+                      {currentCategory.integrales.map((p, idx) => (
+                        <PlanCard key={idx} p={p} waPlan={waPlan} />
+                      ))}
+                    </div>
+
+                    <div className="plans-group-header plans-group-header-spaced">
+                      <h3 className="plans-group-title">Planes Especiales de Descenso</h3>
+                      <p className="plans-group-desc">Opciones de descenso enfocadas en solo grupos terapéuticos o consultas nutricionales semanales.</p>
+                    </div>
+                    <div className="plans-grid plans-grid-4">
+                      {currentCategory.especiales.map((p, idx) => (
+                        <PlanCard key={idx} p={p} waPlan={waPlan} />
+                      ))}
                     </div>
                   </div>
-
-                  <div className="plan-card-body">
-                    <p className="plan-services-heading">Servicios incluidos:</p>
-                    <ul className="plan-feature-list">
-                      {p.features.map((feat, fIdx) => (
-                        <li key={fIdx}>
-                          <svg
-                            className="plan-check-icon"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            aria-hidden="true"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="plan-card-footer">
-                    <a
-                      className={"btn btn-block " + (p.destacado ? "btn-primary" : "btn-outline-purple")}
-                      href={waPlan(p.name)}
-                      target="_blank"
-                      rel="noopener"
-                    >
-                      <WaIcon className="ic-wa" />
-                      <span>Quiero este plan</span>
-                    </a>
-                  </div>
-                </article>
-              ))}
-            </div>
+                )}
+              </>
+            ) : (
+              <div className={`plans-grid plans-grid-${currentCategory.plans.length}`}>
+                {currentCategory.plans.map((p, idx) => (
+                  <PlanCard key={idx} p={p} waPlan={waPlan} />
+                ))}
+              </div>
+            )}
 
             {/* Bloque IMPORTANTE y Beneficios presenciales */}
             <div className="plans-notice">
@@ -1046,10 +1151,10 @@ export default function Landing() {
           <div className="footer-col">
             <h4>Planes</h4>
             <ul>
-              <li><a href="#planes" onClick={() => setActiveCategory("descenso")}>Descenso de Peso</a></li>
+              <li><a href="#planes" onClick={() => { setActiveCategory("descenso"); setDescensoSubTab("integrales"); }}>Descenso de Peso (Integrales)</a></li>
+              <li><a href="#planes" onClick={() => { setActiveCategory("descenso"); setDescensoSubTab("especiales"); }}>Planes Especiales de Descenso</a></li>
+              <li><a href="#planes" onClick={() => setActiveCategory("especiales")}>Planes Personalizados</a></li>
               <li><a href="#planes" onClick={() => setActiveCategory("mantenimiento")}>Mantenimiento</a></li>
-              <li><a href="#planes" onClick={() => setActiveCategory("especiales")}>Planes Especiales</a></li>
-              <li><a href="#planes" onClick={() => setActiveCategory("foco")}>Solo Grupos / Nutrición</a></li>
             </ul>
           </div>
         </div>

@@ -609,6 +609,116 @@ p { margin: 0; }
   font-size: 1rem;
 }
 
+/* Subtabs dentro de Descenso */
+.plan-subtabs {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+  padding: 6px;
+  background: var(--lilac-100);
+  border-radius: 999px;
+  max-width: 100%;
+}
+
+.plan-subtab {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: var(--purple-700);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.plan-subtab:hover {
+  color: var(--purple-900);
+}
+
+.plan-subtab.active {
+  background: #fff;
+  color: var(--purple-900);
+  box-shadow: 0 3px 10px rgba(78, 10, 102, 0.12);
+}
+
+/* Banner de cambio rápido / inline switch */
+.plan-inline-switch {
+  margin-top: 36px;
+  padding: 22px 28px;
+  background: #fff;
+  border: 1.5px dashed var(--line);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.plan-inline-switch-copy {
+  flex: 1 1 320px;
+}
+
+.plan-inline-switch-copy strong {
+  display: block;
+  color: var(--purple-900);
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.plan-inline-switch-copy p,
+.plan-inline-switch-copy span {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+.plans-subheading-wrap {
+  text-align: center;
+  margin-top: 24px;
+  margin-bottom: -10px;
+}
+
+.plans-subheading-lead {
+  max-width: 680px;
+  margin-inline: auto;
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+.plans-group-header {
+  margin-top: 32px;
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.plans-group-header-spaced {
+  margin-top: 56px;
+  padding-top: 36px;
+  border-top: 1.5px solid var(--line);
+}
+
+.plans-group-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--purple-900);
+}
+
+.plans-group-desc {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.btn-sm {
+  padding: 9px 18px;
+  font-size: 0.88rem;
+}
+
 .plans-grid {
   display: grid;
   grid-template-columns: 1fr;
