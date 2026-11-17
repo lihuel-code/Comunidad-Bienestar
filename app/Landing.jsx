@@ -302,7 +302,7 @@ const countDigits = (v) => (v.match(/\d/g) || []).length;
    Componente
 ============================================================================ */
 
-export default function Landing() {
+export default function Landing({ initialView = "inicio" }) {
   const rootRef = useRef(null);
   const heroRef = useRef(null);
   const formRef = useRef(null);
@@ -313,6 +313,7 @@ export default function Landing() {
   const msgRef = useRef(null);
   const hpRef = useRef(null);
 
+  const [activeView, setActiveView] = useState(initialView);
   const [scrolled, setScrolled] = useState(false);
   const [showBar, setShowBar] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -322,6 +323,33 @@ export default function Landing() {
   const waHola = waLink(WA_MESSAGES.hola);
   const waPlan = (p) => waLink(WA_MESSAGES.plan(p));
 
+  // Sincronización con el historial del navegador (Atrás / Adelante)
+  useEffect(() => {
+    const syncFromPath = () => {
+      const isPlanes = window.location.pathname.startsWith("/planes");
+      setActiveView(isPlanes ? "planes" : "inicio");
+    };
+    syncFromPath();
+    window.addEventListener("popstate", syncFromPath);
+    return () => window.removeEventListener("popstate", syncFromPath);
+  }, []);
+
+  const switchView = (view, e, categoryId) => {
+    if (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e.button !== undefined && e.button !== 0)) {
+        return;
+      }
+      e.preventDefault();
+    }
+    if (categoryId) setActiveCategory(categoryId);
+    setActiveView(view);
+    const nextUrl = view === "planes" ? "/planes" : "/";
+    if (typeof window !== "undefined" && window.location.pathname !== nextUrl) {
+      window.history.pushState({}, "", nextUrl);
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   // Sombra del header al hacer scroll
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -330,7 +358,7 @@ export default function Landing() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Barra sticky móvil: aparece al pasar el hero
+  // Barra sticky móvil: aparece al pasar el bloque superior
   useEffect(() => {
     const hero = heroRef.current;
     if (!hero) return;
@@ -345,7 +373,7 @@ export default function Landing() {
     const onScroll = () => setShowBar(window.scrollY > hero.offsetHeight * 0.6);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [activeView]);
 
   // Reveals sutiles al hacer scroll (respeta reduce-motion y no oculta lo visible)
   useEffect(() => {
@@ -354,7 +382,7 @@ export default function Landing() {
     const root = rootRef.current;
     if (!root) return;
     const items = Array.from(
-      root.querySelectorAll(".pain, .feature, .plan-card, .step, .testi")
+      root.querySelectorAll(".pain, .feature, .plan, .plan-card, .step, .testi")
     );
     if (!items.length) return;
 
@@ -387,13 +415,21 @@ export default function Landing() {
     });
 
     return () => io.disconnect();
-  }, []);
+  }, [activeView]);
 
   const clearErr = (name) =>
     setErrors((prev) => (prev[name] ? { ...prev, [name]: "" } : prev));
 
   const scrollToForm = (e) => {
     if (e) e.preventDefault();
+    if (activeView !== "inicio") {
+      switchView("inicio");
+      window.setTimeout(() => {
+        formCardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        nombreRef.current?.focus({ preventScroll: true });
+      }, 150);
+      return;
+    }
     formCardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     window.setTimeout(() => {
       nombreRef.current?.focus({ preventScroll: true });
@@ -465,7 +501,12 @@ export default function Landing() {
       {/* ===================== HEADER ===================== */}
       <header className={"site-header" + (scrolled ? " scrolled" : "")}>
         <div className="container header-inner">
-          <a href="#top" className="brand" aria-label="Comunidad Bienestar — inicio">
+          <a
+            href="/"
+            className="brand"
+            aria-label="Comunidad Bienestar — inicio"
+            onClick={(e) => switchView("inicio", e)}
+          >
             <img
               src="/assets/logo-color.png"
               alt="Comunidad Bienestar"
@@ -474,195 +515,321 @@ export default function Landing() {
               height="50"
             />
           </a>
-          <a
-            className="btn btn-wa header-wa"
-            href={waHola}
-            target="_blank"
-            rel="noopener"
-            aria-label="Escribinos por WhatsApp"
-          >
-            <WaIcon />
-            <span>WhatsApp</span>
-          </a>
+
+          <div className="header-actions">
+            <nav className="header-nav" aria-label="Navegación principal">
+              <a
+                href="/"
+                className={"header-nav-link" + (activeView === "inicio" ? " active" : "")}
+                aria-current={activeView === "inicio" ? "page" : undefined}
+                onClick={(e) => switchView("inicio", e)}
+              >
+                Inicio
+              </a>
+              <a
+                href="/planes"
+                className={"header-nav-link" + (activeView === "planes" ? " active" : "")}
+                aria-current={activeView === "planes" ? "page" : undefined}
+                onClick={(e) => switchView("planes", e)}
+              >
+                Planes
+              </a>
+            </nav>
+
+            <a
+              className="btn btn-wa header-wa"
+              href={waHola}
+              target="_blank"
+              rel="noopener"
+              aria-label="Escribinos por WhatsApp"
+            >
+              <WaIcon />
+              <span>WhatsApp</span>
+            </a>
+          </div>
         </div>
       </header>
 
       <main id="top">
-        {/* ===================== HERO + FORM ===================== */}
-        <section className="hero" ref={heroRef}>
-          <svg
-            className="hero-ribbon"
-            viewBox="0 0 1200 520"
-            preserveAspectRatio="xMidYMid slice"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <defs>
-              <linearGradient id="ribbonGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#878787" stopOpacity="0.55" />
-                <stop offset="0.55" stopColor="#9B22BD" />
-                <stop offset="1" stopColor="#A7DF65" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M-40,300 C160,150 300,150 420,300 C540,450 700,450 820,300 C940,150 1100,150 1260,300"
-              fill="none"
-              stroke="url(#ribbonGrad)"
-              strokeWidth="46"
-              strokeLinecap="round"
-            />
-          </svg>
+        {activeView === "inicio" ? (
+          /* ===================== HERO + FORM (INICIO) ===================== */
+          <section className="hero" ref={heroRef}>
+            <svg
+              className="hero-ribbon"
+              viewBox="0 0 1200 520"
+              preserveAspectRatio="xMidYMid slice"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <defs>
+                <linearGradient id="ribbonGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stopColor="#878787" stopOpacity="0.55" />
+                  <stop offset="0.55" stopColor="#9B22BD" />
+                  <stop offset="1" stopColor="#A7DF65" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M-40,300 C160,150 300,150 420,300 C540,450 700,450 820,300 C940,150 1100,150 1260,300"
+                fill="none"
+                stroke="url(#ribbonGrad)"
+                strokeWidth="46"
+                strokeLinecap="round"
+              />
+            </svg>
 
-          <div className="container hero-grid">
-            <div className="hero-copy">
-              <span className="kicker">
-                <span className="kicker-leaf" aria-hidden="true" />
-                Acompañamiento profesional + comunidad
-              </span>
-              <p className="script-accent">Esta vez, en serio</p>
-              <h1 className="hero-title">¿Querés bajar de peso?</h1>
-              <p className="hero-lead">
-                Probaste mil dietas y, después del envión del principio, el hambre y
-                los antojos te ganan. Te rendís… y recuperás todo lo que habías bajado.
-              </p>
-              <p className="hero-bridge">
-                Hay otra forma: con un <strong>plan realista</strong>, profesionales que
-                te siguen de cerca y un grupo que te banca. Y no, no tenés que pasar hambre.
-              </p>
-
-              <div className="chips">
-                <span className="chip">Acompañamiento profesional</span>
-                <span className="chip">Comunidad que te sostiene</span>
-                <span className="chip">Sin dietas imposibles</span>
-              </div>
-
-              <div className="hero-cta">
-                <a
-                  href="#reservar"
-                  className="btn btn-primary btn-lg js-scroll"
-                  onClick={scrollToForm}
-                >
-                  Reservá tu lugar
-                </a>
-                <a
-                  className="btn btn-wa btn-lg"
-                  href={waHola}
-                  target="_blank"
-                  rel="noopener"
-                  aria-label="Escribinos por WhatsApp"
-                >
-                  <WaIcon />
-                  <span>Escribinos por WhatsApp</span>
-                </a>
-              </div>
-            </div>
-
-            {/* FORMULARIO SUPERIOR */}
-            <div className="form-card" id="reservar" ref={formCardRef}>
-              <div className="form-head">
-                <span className="form-kicker">
+            <div className="container hero-grid">
+              <div className="hero-copy">
+                <span className="kicker">
                   <span className="kicker-leaf" aria-hidden="true" />
-                  Cupos limitados por grupo
+                  Acompañamiento profesional + comunidad
                 </span>
-                <h2 className="form-title">Reservá tu lugar en el próximo grupo</h2>
-                <p className="form-sub">
-                  Dejanos tus datos y te escribimos por WhatsApp para contarte cómo empezar.
+                <p className="script-accent">Esta vez, en serio</p>
+                <h1 className="hero-title">¿Querés bajar de peso?</h1>
+                <p className="hero-lead">
+                  Probaste mil dietas y, después del envión del principio, el hambre y
+                  los antojos te ganan. Te rendís… y recuperás todo lo que habías bajado.
                 </p>
+                <p className="hero-bridge">
+                  Hay otra forma: con un <strong>plan realista</strong>, profesionales que
+                  te siguen de cerca y un grupo que te banca. Y no, no tenés que pasar hambre.
+                </p>
+
+                <div className="chips">
+                  <span className="chip">Acompañamiento profesional</span>
+                  <span className="chip">Comunidad que te sostiene</span>
+                  <span className="chip">Sin dietas imposibles</span>
+                </div>
+
+                <div className="hero-cta">
+                  <a
+                    href="#reservar"
+                    className="btn btn-primary btn-lg js-scroll"
+                    onClick={scrollToForm}
+                  >
+                    Reservá tu lugar
+                  </a>
+                  <a
+                    className="btn btn-wa btn-lg"
+                    href={waHola}
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Escribinos por WhatsApp"
+                  >
+                    <WaIcon />
+                    <span>Escribinos por WhatsApp</span>
+                  </a>
+                </div>
               </div>
 
-              <form ref={formRef} className="lead-form" noValidate onSubmit={handleSubmit}>
-                <div className={"field" + (errors.nombre ? " invalid" : "")}>
-                  <label htmlFor="nombre">Nombre y apellido</label>
-                  <input
-                    ref={nombreRef}
-                    type="text"
-                    id="nombre"
-                    name="nombre"
-                    autoComplete="name"
-                    placeholder="Tu nombre"
-                    required
-                    onInput={() => clearErr("nombre")}
-                  />
-                  <small className="err">{errors.nombre}</small>
+              {/* FORMULARIO SUPERIOR */}
+              <div className="form-card" id="reservar" ref={formCardRef}>
+                <div className="form-head">
+                  <span className="form-kicker">
+                    <span className="kicker-leaf" aria-hidden="true" />
+                    Cupos limitados por grupo
+                  </span>
+                  <h2 className="form-title">Reservá tu lugar en el próximo grupo</h2>
+                  <p className="form-sub">
+                    Dejanos tus datos y te escribimos por WhatsApp para contarte cómo empezar.
+                  </p>
                 </div>
 
-                <div className={"field" + (errors.telefono ? " invalid" : "")}>
-                  <label htmlFor="telefono">Teléfono / WhatsApp</label>
-                  <input
-                    ref={telRef}
-                    type="tel"
-                    id="telefono"
-                    name="telefono"
-                    autoComplete="tel"
-                    inputMode="tel"
-                    placeholder="Ej: 11 5555 5555"
-                    required
-                    onInput={() => clearErr("telefono")}
-                  />
-                  <small className="err">{errors.telefono}</small>
-                </div>
-
-                <div className={"field" + (errors.email ? " invalid" : "")}>
-                  <label htmlFor="email">Email</label>
-                  <input
-                    ref={emailRef}
-                    type="email"
-                    id="email"
-                    name="email"
-                    autoComplete="email"
-                    inputMode="email"
-                    placeholder="tucorreo@email.com"
-                    required
-                    onInput={() => clearErr("email")}
-                  />
-                  <small className="err">{errors.email}</small>
-                </div>
-
-                <div className="field">
-                  <label htmlFor="mensaje">
-                    Contanos un poco tu situación <span className="opt">(opcional)</span>
-                  </label>
-                  <textarea
-                    ref={msgRef}
-                    id="mensaje"
-                    name="mensaje"
-                    rows="2"
-                    placeholder="Qué te gustaría lograr…"
-                  />
-                </div>
-
-                {/* Anti-spam (no tocar) */}
-                <input
-                  ref={hpRef}
-                  type="text"
-                  name="website"
-                  className="hp"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  aria-hidden="true"
-                />
-
-                <button type="submit" className="btn btn-primary btn-block btn-lg">
-                  Quiero empezar
-                </button>
-                <p className="form-note">
-                  Te contactamos a la brevedad. Usamos tus datos solo para responderte.
-                </p>
-
-                {submitted && (
-                  <div className="form-success" role="status">
-                    <strong>¡Listo! 🎉</strong> Te llevamos a WhatsApp para terminar. Si no
-                    se abre solo, escribinos al{" "}
-                    <a href={waHola} target="_blank" rel="noopener">
-                      +54 11 2258 1566
-                    </a>
-                    .
+                <form ref={formRef} className="lead-form" noValidate onSubmit={handleSubmit}>
+                  <div className={"field" + (errors.nombre ? " invalid" : "")}>
+                    <label htmlFor="nombre">Nombre y apellido</label>
+                    <input
+                      ref={nombreRef}
+                      type="text"
+                      id="nombre"
+                      name="nombre"
+                      autoComplete="name"
+                      placeholder="Tu nombre"
+                      required
+                      onInput={() => clearErr("nombre")}
+                    />
+                    <small className="err">{errors.nombre}</small>
                   </div>
-                )}
-              </form>
+
+                  <div className={"field" + (errors.telefono ? " invalid" : "")}>
+                    <label htmlFor="telefono">Teléfono / WhatsApp</label>
+                    <input
+                      ref={telRef}
+                      type="tel"
+                      id="telefono"
+                      name="telefono"
+                      autoComplete="tel"
+                      inputMode="tel"
+                      placeholder="Ej: 11 5555 5555"
+                      required
+                      onInput={() => clearErr("telefono")}
+                    />
+                    <small className="err">{errors.telefono}</small>
+                  </div>
+
+                  <div className={"field" + (errors.email ? " invalid" : "")}>
+                    <label htmlFor="email">Email</label>
+                    <input
+                      ref={emailRef}
+                      type="email"
+                      id="email"
+                      name="email"
+                      autoComplete="email"
+                      inputMode="email"
+                      placeholder="tucorreo@email.com"
+                      required
+                      onInput={() => clearErr("email")}
+                    />
+                    <small className="err">{errors.email}</small>
+                  </div>
+
+                  <div className="field">
+                    <label htmlFor="mensaje">
+                      Contanos un poco tu situación <span className="opt">(opcional)</span>
+                    </label>
+                    <textarea
+                      ref={msgRef}
+                      id="mensaje"
+                      name="mensaje"
+                      rows="2"
+                      placeholder="Qué te gustaría lograr…"
+                    />
+                  </div>
+
+                  {/* Anti-spam (no tocar) */}
+                  <input
+                    ref={hpRef}
+                    type="text"
+                    name="website"
+                    className="hp"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                  />
+
+                  <button type="submit" className="btn btn-primary btn-block btn-lg">
+                    Quiero empezar
+                  </button>
+                  <p className="form-note">
+                    Te contactamos a la brevedad. Usamos tus datos solo para responderte.
+                  </p>
+
+                  {submitted && (
+                    <div className="form-success" role="status">
+                      <strong>¡Listo! 🎉</strong> Te llevamos a WhatsApp para terminar. Si no
+                      se abre solo, escribinos al{" "}
+                      <a href={waHola} target="_blank" rel="noopener">
+                        +54 11 2258 1566
+                      </a>
+                      .
+                    </div>
+                  )}
+                </form>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ) : (
+          /* ===================== PLANES Y ARANCELES (PESTAÑA PLANES) ===================== */
+          <section className="section section-soft plans-top-section" id="planes" ref={heroRef}>
+            <div className="container center">
+              <span className="kicker kicker-center">
+                <span className="kicker-leaf" aria-hidden="true" />
+                Planes y Aranceles
+              </span>
+              <h1 className="section-title">Elegí el plan para vos</h1>
+              <p className="section-sub">
+                Diseñados de forma integral para brindarte seguimiento profesional, comunidad activa y resultados reales que podés sostener.
+              </p>
+
+              {/* Selector de categorías / pestañas */}
+              <div className="plan-tabs" role="tablist" aria-label="Categorías de planes">
+                {PLAN_CATEGORIES.map((cat) => (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeCategory === cat.id}
+                    className={"plan-tab" + (activeCategory === cat.id ? " active" : "")}
+                    onClick={() => setActiveCategory(cat.id)}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+
+              {currentCategory?.tagline && (
+                <p className="plan-cat-tagline">{currentCategory.tagline}</p>
+              )}
+            </div>
+
+            <div className="container">
+              <div className={`plans-grid plans-grid-${currentCategory.plans.length}`}>
+                {currentCategory.plans.map((p, idx) => (
+                  <PlanCard key={idx} p={p} waPlan={waPlan} />
+                ))}
+              </div>
+
+              {/* Bloque IMPORTANTE y Beneficios presenciales */}
+              <div className="plans-notice">
+                <div className="plans-notice-badge">
+                  <span className="kicker-leaf" aria-hidden="true" />
+                  Información Importante
+                </div>
+
+                <div className="plans-notice-grid">
+                  <div className="notice-item">
+                    <div className="notice-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Condiciones de Pago</h4>
+                      <p>
+                        Los pagos de planes se realizan del <strong>1 al 10 de cada mes</strong> (posterior a esa fecha aplica 10% de recargo).
+                        Todos los aranceles tienen un ajuste trimestral.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="notice-item">
+                    <div className="notice-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Actividades Presenciales en Zona Norte</h4>
+                      <p>Para quienes puedan acercarse a Zona Norte de Bs. As.:</p>
+                      <ul className="notice-sublist">
+                        <li>• <strong>Caminatas de domingos por la mañana</strong> con nuestros Coordinadores.</li>
+                        <li>• <strong>Medias Jornadas Abiertas:</strong> Ejercicio + Grupo terapéutico.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="notice-footer">
+                  <p>
+                    Sabemos que es mucha información, pero está todo pensado y diseñado para que encuentres con nosotros los resultados que necesitás. <strong>¡Te esperamos!</strong>
+                  </p>
+                  <a
+                    className="btn btn-wa"
+                    href={waHola}
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <WaIcon />
+                    <span>¿Tenés dudas? Hablá con nosotras</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* ===================== EMPATÍA ===================== */}
         <section className="section section-soft">
@@ -774,104 +941,66 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* ===================== PLANES ===================== */}
-        <section className="section section-soft" id="planes">
-          <div className="container center">
-            <span className="kicker kicker-center">Planes y Aranceles</span>
-            <h2 className="section-title">Elegí el plan para vos</h2>
-            <p className="section-sub">
-              Diseñados de forma integral para brindarte seguimiento profesional, comunidad activa y resultados reales que podés sostener.
-            </p>
-
-            {/* Selector de categorías / pestañas */}
-            <div className="plan-tabs" role="tablist" aria-label="Categorías de planes">
-              {PLAN_CATEGORIES.map((cat) => (
-                <button
-                  key={cat.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={activeCategory === cat.id}
-                  className={"plan-tab" + (activeCategory === cat.id ? " active" : "")}
-                  onClick={() => setActiveCategory(cat.id)}
-                >
-                  {cat.label}
-                </button>
-              ))}
+        {/* ===================== PLANES (RESUMEN EN INICIO) ===================== */}
+        {activeView === "inicio" && (
+          <section className="section section-soft">
+            <div className="container narrow center">
+              <span className="kicker kicker-center">Planes</span>
+              <h2 className="section-title">Elegí tu camino</h2>
+              <p className="section-sub">
+                Si no sabés cuál te conviene, escribinos y te ayudamos a decidir.
+              </p>
             </div>
-
-            {currentCategory?.tagline && (
-              <p className="plan-cat-tagline">{currentCategory.tagline}</p>
-            )}
-          </div>
-
-          <div className="container">
-            <div className={`plans-grid plans-grid-${currentCategory.plans.length}`}>
-              {currentCategory.plans.map((p, idx) => (
-                <PlanCard key={idx} p={p} waPlan={waPlan} />
-              ))}
-            </div>
-
-            {/* Bloque IMPORTANTE y Beneficios presenciales */}
-            <div className="plans-notice">
-              <div className="plans-notice-badge">
-                <span className="kicker-leaf" aria-hidden="true" />
-                Información Importante
-              </div>
-
-              <div className="plans-notice-grid">
-                <div className="notice-item">
-                  <div className="notice-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                      <line x1="16" y1="2" x2="16" y2="6" />
-                      <line x1="8" y1="2" x2="8" y2="6" />
-                      <line x1="3" y1="10" x2="21" y2="10" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4>Condiciones de Pago</h4>
-                    <p>
-                      Los pagos de planes se realizan del <strong>1 al 10 de cada mes</strong> (posterior a esa fecha aplica 10% de recargo).
-                      Todos los aranceles tienen un ajuste trimestral.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="notice-item">
-                  <div className="notice-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z" />
-                      <circle cx="12" cy="10" r="3" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4>Actividades Presenciales en Zona Norte</h4>
-                    <p>Para quienes puedan acercarse a Zona Norte de Bs. As.:</p>
-                    <ul className="notice-sublist">
-                      <li>• <strong>Caminatas de domingos por la mañana</strong> con nuestros Coordinadores.</li>
-                      <li>• <strong>Medias Jornadas Abiertas:</strong> Ejercicio + Grupo terapéutico.</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div className="notice-footer">
-                <p>
-                  Sabemos que es mucha información, pero está todo pensado y diseñado para que encuentres con nosotros los resultados que necesitás. <strong>¡Te esperamos!</strong>
+            <div className="container plans">
+              <article className="plan">
+                <h3 className="plan-name">Vale Bienestar</h3>
+                <p className="plan-desc">
+                  El primer paso ideal para conocernos y empezar a cuidarte, sin grandes compromisos.
                 </p>
-                <a
-                  className="btn btn-wa"
-                  href={waHola}
-                  target="_blank"
-                  rel="noopener"
-                >
-                  <WaIcon />
-                  <span>¿Tenés dudas? Hablá con nosotras</span>
+                <a className="plan-link" href={waPlan("Vale Bienestar")} target="_blank" rel="noopener">
+                  Consultar <span aria-hidden="true">→</span>
                 </a>
-              </div>
+              </article>
+              <article className="plan plan-featured">
+                <span className="plan-badge">El más elegido</span>
+                <h3 className="plan-name">Descenso de Peso</h3>
+                <p className="plan-desc">
+                  Nuestro programa principal para bajar de peso de forma saludable y acompañada.
+                </p>
+                <a className="plan-link" href={waPlan("Descenso de Peso")} target="_blank" rel="noopener">
+                  Consultar <span aria-hidden="true">→</span>
+                </a>
+              </article>
+              <article className="plan">
+                <h3 className="plan-name">Plan 1 × 1</h3>
+                <p className="plan-desc">
+                  Atención personalizada, 100% enfocada en vos, tu ritmo y tus objetivos.
+                </p>
+                <a className="plan-link" href={waPlan("Plan 1x1")} target="_blank" rel="noopener">
+                  Consultar <span aria-hidden="true">→</span>
+                </a>
+              </article>
+              <article className="plan">
+                <h3 className="plan-name">Mantenimiento</h3>
+                <p className="plan-desc">
+                  Ya llegaste a tu meta. Te ayudamos a sostener el resultado en el tiempo.
+                </p>
+                <a className="plan-link" href={waPlan("Mantenimiento")} target="_blank" rel="noopener">
+                  Consultar <span aria-hidden="true">→</span>
+                </a>
+              </article>
             </div>
-          </div>
-        </section>
+            <div className="container center plans-more-cta">
+              <a
+                href="/planes"
+                className="btn btn-outline-purple"
+                onClick={(e) => switchView("planes", e)}
+              >
+                Ver todos los planes y precios →
+              </a>
+            </div>
+          </section>
+        )}
 
         {/* ===================== PASOS ===================== */}
         <section className="section">
@@ -1042,9 +1171,9 @@ export default function Landing() {
           <div className="footer-col">
             <h4>Planes</h4>
             <ul>
-              <li><a href="#planes" onClick={() => setActiveCategory("descenso")}>Planes de Descenso</a></li>
-              <li><a href="#planes" onClick={() => setActiveCategory("especiales")}>Planes Especiales</a></li>
-              <li><a href="#planes" onClick={() => setActiveCategory("mantenimiento")}>Planes de Mantenimiento</a></li>
+              <li><a href="/planes" onClick={(e) => switchView("planes", e, "descenso")}>Planes de Descenso</a></li>
+              <li><a href="/planes" onClick={(e) => switchView("planes", e, "especiales")}>Planes Especiales</a></li>
+              <li><a href="/planes" onClick={(e) => switchView("planes", e, "mantenimiento")}>Planes de Mantenimiento</a></li>
             </ul>
           </div>
         </div>
